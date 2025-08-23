@@ -1,7 +1,7 @@
 # Recovery-Time Pulse Oximeter
 
 **Technological Outcome — NZ Digital Technologies Assessment 2025**  
-A wearable-style timer project that uses an ESP32 and MAX30102 sensor to monitor SpO₂ (oxygen saturation) and heart rate during recovery after exertion.
+A timer project that uses an ESP32 and MAX30102 sensor to monitor SpO₂ (oxygen saturation) and heart rate during recovery after exertion.
 
 ## 🔍 Project Overview
 

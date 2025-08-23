@@ -9,27 +9,18 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 // default I2C pins are SDA=21, SCL=22. Explicitly set them:
 const int SDA_PIN = 21;
 const int SCL_PIN = 22;
-
-
 void setup() {
-
    Wire.begin(SDA_PIN, SCL_PIN);
-
   // Initialises the LCD controller (must be called before printing)
   lcd.init();
-
   // Turns on the LCD backlight (so text is visible)
   lcd.backlight();
-
   // Puts the cursor at column 0, row 0 (top-left corner)
   lcd.setCursor(0, 0);
-
   // Prints the project title on the first line
   lcd.print("Max's Oxy Meter");
-
   // Moves the cursor to column 0, row 1 (second line)
   lcd.setCursor(0, 1);
-
   // Prints a simple version tag on the second line
   lcd.print("Version:1.0");
 }
@@ -49,5 +40,4 @@ void loop() {
   lcd.print("Oxy:   Pulse: ");
   // Holds this screen for 1 second before looping again
   delay(1000);
-
 }
