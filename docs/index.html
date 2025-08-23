@@ -38,7 +38,39 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
   <img src="ESP32-Diagram-Final1.svg" alt="Wiring Diagram with 1602A LCD and ESP32" style="width:100%; max-width:700px; border: 1px solid #ccc; padding: 5px; background: #f9f9f9;" />
 
   <h2>📷 Demo & Photos</h2>
-  <p><em>Insert screenshots or video link here</em></p>
+  <h2 id="demos">📷 Demo & Tests</h2>
+<p>This project is demonstrated in stages, then assembled at the end to show the full journey.</p>
+
+<ol>
+  <li id="demo-lcd"><strong>LCD Smoke Test</strong> — I²C display initialises and shows text. <em>Artefacts:</em> photos + short clip.</li>
+  <li id="demo-button"><strong>Button Input</strong> — Debounced reads via <code>INPUT_PULLUP</code>.</li>
+  <li id="demo-max30102"><strong>MAX30102 Bring-up</strong> — Raw IR/Red samples stream without I²C errors.</li>
+  <li id="demo-filter"><strong>Filtering & Averaging</strong> — Smoothed SpO₂/HR; reduced noise.</li>
+  <li id="demo-threshold"><strong>Target Detect + Buzzer</strong> — Threshold triggers and audible cue.</li>
+  <li id="demo-logging"><strong>Data Logging</strong> — CSV with session summary.</li>
+  <li id="demo-integrated"><strong>Integration Test</strong> — All modules working together.</li>
+  <li id="demo-final"><strong>Final Assembly</strong> — Enclosure and user flow.</li>
+</ol>
+
+<h3>Stage 1 — LCD Smoke Test</h3>
+<p><em>Goal:</em> prove the LCD works with the ESP32 at 3.3V I²C (SDA=21, SCL=22). <em>Pass:</em> crisp text, steady for ≥60s.</p>
+
+<figure>
+  <img src="photos/lcd-test-1.jpeg" alt="LCD showing 'Reading Finger' screen" style="width:100%;max-width:720px;border:1px solid #ccc;padding:4px;background:#f9f9f9;">
+  <figcaption>LCD test — runtime screen.</figcaption>
+</figure>
+
+<figure>
+  <img src="photos/lcd-test-2.jpeg" alt="LCD showing startup screen 'Max's Oxy Meter'" style="width:100%;max-width:720px;border:1px solid #ccc;padding:4px;background:#f9f9f9;">
+  <figcaption>LCD test — startup screen.</figcaption>
+</figure>
+
+<video controls preload="metadata" style="width:100%;max-width:720px;border:1px solid #ccc;">
+  <source src="videos/lcd-test.mov" type="video/quicktime">
+  <source src="videos/lcd-test.mov" type="video/mp4">
+  Your browser can’t play the embedded clip. <a href="videos/lcd-test.mov">Download the video</a>.
+</video>
+
 
   <footer><small>© 2025 Student Project | MIT Licensed</small></footer>
 </body>
