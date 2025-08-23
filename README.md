@@ -70,10 +70,21 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
 - Dev logs with screenshots, code versions, test notes
 - Interface behaviour and improvements tracked
 
+### ✅ Stage 1 — LCD Smoke Test
+
+**Goal:** Prove the I²C 1602A LCD works on ESP32 (text visible, no flicker).  
+**Method:** `TestPrograms/lcd-tests/lcd-tests.ino`  
+**Pass:** Clear text on both lines; stable for ≥60s.
+
+**Evidence:**
+- Photos:  
+  ![LCD test 1](docs/photos/lcd-test-1.jpeg)  
+  ![LCD test 2](docs/photos/lcd-test-2.jpeg)
+- Video: [docs/videos/lcd-test.mov](docs/videos/lcd-test.mov)
+
+
 ## 📄 License
 
 This project uses open-source libraries. See [LICENSE](LICENSE) for more.
 
----
 
-_Built with ❤️ for NZDigiTech 2025 — Target Timer Assessment_
