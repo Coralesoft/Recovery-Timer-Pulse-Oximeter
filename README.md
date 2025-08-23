@@ -93,6 +93,16 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
   ![Button test serial output](docs/photos/button-test-serial.png)
 - Source: `TestPrograms/button-test/button-test.ino`
 
+### ✅ Stage 3 — Buzzer Test
+
+**Goal:** Confirm audible output using an active buzzer on GPIO19.  
+**Method:** Pin 19 drives buzzer; code pulses 200 ms on / 800 ms off.  
+**Pass:** Distinct beeps heard once per second.
+
+**Evidence:**
+- Clip: [docs/videos/buzzer-test.mov](docs/videos/buzzer-test.mov)
+- Source: `TestPrograms/buzzer-test/buzzer-test.ino`
+
 
 ## 📄 License
 

@@ -79,6 +79,16 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
   <figcaption>Button test — serial output matches presses.</figcaption>
 </figure>
 
+<h3 id="demo-buzzer">Stage 3 — Buzzer Test</h3>
+<p><em>Goal:</em> confirm audible output from buzzer on GPIO19.</p>
+<p><em>Method:</em> GPIO19 drives a 3.3 V active buzzer. Code pulses HIGH for 200 ms every second.</p>
+<p><em>Pass:</em> buzzer beeps once per second, clearly audible.</p>
+
+<video controls preload="metadata" style="width:100%;max-width:720px;border:1px solid #ccc;">
+  <source src="videos/buzzer-test.mov" type="video/quicktime">
+  <source src="videos/buzzer-test.mov" type="video/mp4">
+  Your browser can’t play this clip. <a href="videos/buzzer-test.mov">Download</a>.
+</video>
 
   <footer><small>© 2025 Student Project | MIT Licensed</small></footer>
 </body>
