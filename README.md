@@ -81,6 +81,17 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
   ![LCD test 1](docs/photos/lcd-test-1.jpeg)  
   ![LCD test 2](docs/photos/lcd-test-2.jpeg)
 - Video: [docs/videos/lcd-test.mov](docs/videos/lcd-test.mov)
+- 
+### ✅ Stage 2 — Button Test
+
+**Goal:** Verify push button input using GPIO18 with `INPUT_PULLUP`.  
+**Method:** Button wired between GPIO18 and GND. Code prints `Pressed`/`Released` via Serial Monitor.  
+**Pass:** 50 presses with no false triggers.
+
+**Evidence:**
+- Screenshot:  
+  ![Button test serial output](docs/photos/button-test-serial.png)
+- Source: `TestPrograms/button-test/button-test.ino`
 
 
 ## 📄 License
