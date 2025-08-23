@@ -1,0 +1,4 @@
+# Ensure consistent LF endings in source files
+*.ino text eol=lf
+*.cpp text eol=lf
+*.h   text eol=lf
