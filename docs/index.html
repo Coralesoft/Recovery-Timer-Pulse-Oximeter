@@ -69,6 +69,15 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
   <source src="videos/lcd-test.mov" type="video/mp4">
   Your browser can’t play the embedded clip. <a href="videos/lcd-test.mov">Download the video</a>.
 </video>
+<h3 id="demo-button">Stage 2 — Button Test</h3>
+<p><em>Goal:</em> verify button input on GPIO18 with internal pull-up enabled.</p>
+<p><em>Method:</em> Wire button between GPIO18 and GND. Program reports <code>Pressed</code> / <code>Released</code> to Serial Monitor.</p>
+<p><em>Pass:</em> 50 presses without false triggers.</p>
+
+<figure>
+  <img src="photos/button-test-serial.png" alt="Serial Monitor showing button pressed/released output" style="width:100%;max-width:720px;border:1px solid #ccc;padding:4px;background:#f9f9f9;">
+  <figcaption>Button test — serial output matches presses.</figcaption>
+</figure>
 
 
   <footer><small>© 2025 Student Project | MIT Licensed</small></footer>
