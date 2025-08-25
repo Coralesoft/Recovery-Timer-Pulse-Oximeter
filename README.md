@@ -103,6 +103,15 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
 - Clip: [docs/videos/buzzer-test.mov](docs/videos/buzzer-test.mov)
 - Source: `TestPrograms/buzzer-test/buzzer-test.ino`
 
+### ✅ Stage 4A — OLED UI (SSD1306)
+**Goal:** Replace 1602 LCD with 0.91" I²C OLED for crisp text/graphics at 3.3 V.  
+**Wiring:** VCC→3V3, GND→GND, SCL→GPIO22, SDA→GPIO21.  
+**Evidence:**  
+
+- Screenshot: ![OLED Mock-up](docs/photos/oled-mock-up.jpg)  
+- Demo Video: [oled-mock-up.mov](docs/videos/oled-mock-up.mov)  
+
+**Source:** `TestPrograms/oled-mock-ui/oled-mock-ui.ino`
 
 ## 📄 License
 
