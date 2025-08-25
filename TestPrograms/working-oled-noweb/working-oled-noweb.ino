@@ -118,3 +118,134 @@ void computeIfReady() {
     validHr = 0;
     return;
   }
+
+  int32_t s, hr;
+  int8_t vs, vhr;
+  maxim_heart_rate_and_oxygen_saturation(irBuf, BUFLEN, redBuf, &s, &vs, &hr, &vhr);
+
+  spo2      = s;
+  validSpo2 = vs;
+  heartRate = hr;
+  validHr   = vhr;
+  lastComputeMs = millis();
+
+  // Update smoothed display values only when valid
+  if (validSpo2 && spo2 > 0 && spo2 <= 100) {
+    displaySpo2 = emaUpdate(displaySpo2, (int)spo2);
+  }
+  if (validHr && heartRate > 0 && heartRate < 240) {
+    displayHr = emaUpdate(displayHr, (int)heartRate);
+  }
+}
+
+void maybeAdjustAutoGain() {
+  // Adjust brightness gently to keep IR around the target band.
+  // Only when a finger is present and not too frequently.
+  uint32_t now = millis();
+  if (now - lastGainAdjust < GAIN_PERIOD_MS) return;
+  if (lastIR < FINGER_IR_THRESHOLD) return;
+
+  bool changed = false;
+  if (lastIR < IR_TARGET_LOW && ledCurrent < LED_MAX) {
+    byte next = ledCurrent + LED_STEP;
+    ledCurrent = (next > LED_MAX) ? LED_MAX : next;
+    changed = true;
+  } else if (lastIR > IR_TARGET_HIGH && ledCurrent > LED_MIN) {
+    byte next = (ledCurrent > LED_STEP) ? ledCurrent - LED_STEP : LED_MIN;
+    ledCurrent = (next < LED_MIN) ? LED_MIN : next;
+    changed = true;
+  }
+
+  if (changed) {
+    sensor.setPulseAmplitudeRed(ledCurrent);
+    sensor.setPulseAmplitudeIR(ledCurrent);
+    // (No OLED hint here; we refresh only once per second.)
+    lastGainAdjust = now;
+  }
+}
+
+// ===== OLED rendering =====
+void renderOLED() {
+  if (display.width() == 0) return;
+
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+
+  // Line 1: Status
+  if (lastIR >= FINGER_IR_THRESHOLD) {
+    display.print("Status: ");
+    display.println("Reading");
+  } else {
+    display.print("Status: ");
+    display.println("No finger");
+  }
+
+  // Line 2: SpO2
+  display.print("SpO2: ");
+  if (validSpo2 && displaySpo2 > 0) {
+    display.print(displaySpo2);
+    display.println(" %");
+  } else {
+    display.println("-- %");
+  }
+
+  // Line 3: Pulse
+  display.print("Pulse: ");
+  if (validHr && displayHr > 0) {
+    display.print(displayHr);
+    display.println(" bpm");
+  } else {
+    display.println("--- bpm");
+  }
+
+  // Line 4: heartbeat trail (steps once per render = 1 Hz)
+  int x = (millis() / 100) % OLED_WIDTH;  // still based on time; will appear to "jump" each second
+  display.drawPixel(x, OLED_HEIGHT - 1, SSD1306_WHITE);
+
+  display.display();
+}
+
+// ===== Arduino lifecycle =====
+void setup() {
+  Serial.begin(115200);
+  delay(200);
+  setupSensor();
+}
+
+void loop() {
+  // Pull samples continuously
+  if (sensor.available()) {
+    uint32_t red = sensor.getRed();
+    uint32_t ir  = sensor.getIR();
+    sensor.nextSample();
+    lastIR = ir;
+
+    if (bufCount < BUFLEN) {
+      redBuf[bufCount] = red;
+      irBuf[bufCount]  = ir;
+      bufCount++;
+    } else {
+      // Slide by 1 to keep ~100-sample window
+      memmove(redBuf, redBuf + 1, (BUFLEN - 1) * sizeof(uint32_t));
+      memmove(irBuf,  irBuf  + 1, (BUFLEN - 1) * sizeof(uint32_t));
+      redBuf[BUFLEN - 1] = red;
+      irBuf[BUFLEN - 1]  = ir;
+    }
+  } else {
+    sensor.check();  // load more samples from sensor FIFO
+  }
+
+  // Compute & refresh OLED once per second
+  static uint32_t lastCalc = 0;
+  if (millis() - lastCalc >= 1000) {  // 1 Hz
+    computeIfReady();
+    renderOLED();          // update display at the same time
+    lastCalc = millis();
+  }
+
+  // Auto-gain slightly more often than display updates
+  maybeAdjustAutoGain();
+
+  delay(2); // tiny yield
+}
