@@ -46,7 +46,7 @@ MAX30105 sensor;                 // Driver instance for the MAX3010x family
 
 // Sensor configuration constants
 const byte LED_BRIGHTNESS = 220;   // Initial LED current (0..255). Auto-gain may change this.
-const byte SAMPLE_AVG     = 8;     // On-sensor averaging: 1,2,4,8,16,32 (trade noise vs latency)
+const byte SAMPLE_AVG     = 16;     // On-sensor averaging: 1,2,4,8,16,32 (trade noise vs latency)
 const byte LED_MODE       = 2;     // 2 = Red + IR (required for SpO₂)
 const byte SAMPLE_RATE    = 100;   // Sample rate in Hz
 const int  PULSE_WIDTH    = 411;   // LED pulse width in µs (longer ⇒ deeper ADC range)
