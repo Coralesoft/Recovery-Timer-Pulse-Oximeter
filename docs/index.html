@@ -99,18 +99,20 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
   <figcaption>OLED Mock-up Screenshot</figcaption>
 </figure>
 
-<h2 id="max30102">🩺 Adding the MAX30102 (SpO₂ + Heart Rate)</h2>
-<p><strong>Goal:</strong> wire the MAX30102 to the ESP32, prove it’s alive on I²C, and stream raw data before integrating the SpO₂/HR algorithm.</p>
+<h3 id="demo-max30102">Stage 4B — MAX30102 Bring-up</h3>
+<p><em>Goal:</em> wire the MAX30102 to the ESP32, confirm I²C comms, and stream raw IR/RED before integrating SpO₂/HR.</p>
+<p><em>Method:</em> Wire as below, run an I²C scanner with <code>Wire.begin(21,22)</code> to see <code>0x57</code>, then flash the minimal check sketch.</p>
+<p><em>Pass:</em> address <code>0x57</code> appears in the scan; IR/RED values change with a finger on the sensor.</p>
 
-<h3>Wiring (ESP32 → MAX30102)</h3>
+<p><em>Wiring:</em> VIN→3V3, GND→GND, SDA→GPIO21, SCL→GPIO22, INT→GPIO19.</p>
 <table>
   <thead><tr><th>MAX30102</th><th>ESP32 pin</th><th>Notes</th></tr></thead>
   <tbody>
-    <tr><td><strong>VIN</strong></td><td><strong>3V3</strong></td><td>3.3&nbsp;V only (do <em>not</em> use 5&nbsp;V)</td></tr>
+    <tr><td><strong>VIN</strong></td><td><strong>3V3</strong></td><td>3.3 V only</td></tr>
     <tr><td><strong>GND</strong></td><td><strong>GND</strong></td><td>Common ground</td></tr>
-    <tr><td><strong>SDA</strong></td><td><strong>GPIO21 (D21)</strong></td><td>I²C data</td></tr>
-    <tr><td><strong>SCL</strong></td><td><strong>GPIO22 (D22)</strong></td><td>I²C clock</td></tr>
-    <tr><td><strong>INT</strong></td><td><strong>GPIO19 (D19)</strong></td><td>Optional, active-low “data ready”</td></tr>
+    <tr><td><strong>SDA</strong></td><td><strong>GPIO21</strong></td><td>I²C data</td></tr>
+    <tr><td><strong>SCL</strong></td><td><strong>GPIO22</strong></td><td>I²C clock</td></tr>
+    <tr><td><strong>INT</strong></td><td><strong>GPIO19</strong></td><td>Active-low “data ready” (optional)</td></tr>
   </tbody>
 </table>
 
@@ -119,45 +121,55 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
   <figcaption>MAX30102 wiring as built.</figcaption>
 </figure>
 
-<h3>Bring-up steps</h3>
-<ol>
-  <li>Run an I²C scanner with <code>Wire.begin(21,22)</code>. <em>Pass:</em> device at <strong>0x57</strong>.</li>
-  <li>Flash the minimal check sketch. <em>Pass:</em> IR/RED values change with a finger on the sensor.</li>
-</ol>
-
 <h4>Minimal check sketch</h4>
 <pre><code>// Libraries: SparkFun MAX3010x (MAX30105.h)
 #include &lt;Wire.h&gt;
 #include &lt;MAX30105.h&gt;
-constexpr int PIN_SDA=21, PIN_SCL=22, PIN_INT=19;
+
+constexpr int PIN_SDA = 21;
+constexpr int PIN_SCL = 22;
+constexpr int PIN_INT = 19; // optional
+
 MAX30105 max;
-void setup(){
-  Serial.begin(115200); delay(200);
+
+void setup() {
+  Serial.begin(115200);
+  delay(200);
   Wire.begin(PIN_SDA, PIN_SCL);
-  if(!max.begin(Wire, I2C_SPEED_FAST)){ Serial.println("MAX30102 not found"); while(1){} }
-  max.setup(0x1F,4,2,100,411,4096); // brightness, avg, mode, rate, width, adc
-  max.setPulseAmplitudeRed(0x1F); max.setPulseAmplitudeIR(0x1F);
-  pinMode(PIN_INT, INPUT_PULLUP);
-  Serial.println("MAX30102 ready");
+
+  if (!max.begin(Wire, I2C_SPEED_FAST)) {
+    Serial.println("MAX30102 not found (check 0x57, power, SDA/SCL).");
+    while (1) delay(10);
+  }
+
+  // Conservative first-light settings
+  byte ledBrightness = 0x1F;   // 0x00..0xFF
+  byte sampleAverage = 4;      // 1,2,4,8,16,32
+  byte ledMode       = 2;      // 2 = Red+IR
+  byte sampleRate    = 100;    // 50..1000
+  int  pulseWidth    = 411;    // 69,118,215,411 us
+  int  adcRange      = 4096;   // 2048..16384 nA
+  max.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
+  max.setPulseAmplitudeRed(0x1F);
+  max.setPulseAmplitudeIR(0x1F);
+
+  pinMode(PIN_INT, INPUT_PULLUP); // safe even if breakout already has pull-up
+  Serial.println("MAX30102 ready — cover sensor with finger.");
 }
-void loop(){
-  long ir=max.getIR(), red=max.getRed();
-  Serial.print("IR: "); Serial.print(ir); Serial.print("  RED: "); Serial.println(red);
+
+void loop() {
+  long ir  = max.getIR();
+  long red = max.getRed();
+
+  if (ir == 0 && red == 0) {
+    Serial.println("No data — check finger placement.");
+  } else {
+    Serial.print("IR: ");  Serial.print(ir);
+    Serial.print("  RED: "); Serial.println(red);
+  }
   delay(50);
 }
 </code></pre>
-
-<h3>Troubleshooting</h3>
-<ul>
-  <li><strong>No 0x57 in scan:</strong> check 3V3 power, SDA/SCL, bus at 3.3&nbsp;V, no shorts.</li>
-  <li><strong>Zeros/flat line:</strong> raise LED amplitude a little; press finger gently; avoid motion/light leaks.</li>
-  <li><strong>INT unused:</strong> OK to poll first; add <code>attachInterrupt</code> on D19 later.</li>
-</ul>
-
-<p class="note" style="background:#fffbe6;border-left:4px solid #f0c200;padding:.75rem 1rem;">
-  <strong>Not medical advice:</strong> This is an educational project; readings are indicative only.
-</p>
-
 
   
   <footer><small>© 2025 Max Brown | MIT Licensed</small></footer>
