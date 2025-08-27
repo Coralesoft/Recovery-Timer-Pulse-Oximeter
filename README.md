@@ -113,6 +113,37 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
 
 **Source:** `TestPrograms/oled-mock-ui/oled-mock-ui.ino`
 
+### ✅ Stage 4B — MAX30102 Bring-up
+
+**Goal:** Wire the MAX30102 to the ESP32, confirm I²C comms, and stream raw IR/RED before integrating SpO₂/HR.
+
+**Method:**  
+- Wire as below and run an I²C scanner with `Wire.begin(21,22)` to confirm address **0x57**.  
+- Flash a minimal check sketch that prints IR/RED to Serial.  
+- Adjust finger placement and LED amplitude as needed to get steady changes.
+
+**Wiring:**  
+- `VIN → 3V3`  
+- `GND → GND`  
+- `SDA → GPIO21 (D21)`  
+- `SCL → GPIO22 (D22)`  
+- `INT → GPIO19 (D19)` *(optional, active-low “data ready”)*
+
+**Pass:**  
+- I²C scanner shows **0x57**.  
+- With a fingertip on the sensor, **IR/RED values change smoothly** in Serial Monitor.
+
+**Evidence:**  
+- Photo: `docs/photos/max30102-wired.jpg`  
+- Serial screenshot: `docs/photos/max30102-serial.png`
+
+**Source:** `TestPrograms/max30102-check/max30102-check.ino`
+
+**Notes:**  
+- Keep the I²C bus at **3.3 V**. If your display runs at 5 V, make sure its I²C pull-ups are not tied to 5 V.  
+- If **GPIO19** was used for the buzzer earlier, move the buzzer to **GPIO15** so `INT` can use **GPIO19**.
+
+
 ## 📄 License
 
 This project uses open-source libraries. See [LICENSE](LICENSE) for more.
