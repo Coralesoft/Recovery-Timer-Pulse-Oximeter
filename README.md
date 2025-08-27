@@ -134,6 +134,7 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
 - With a fingertip on the sensor, **IR/RED values change smoothly** in Serial Monitor.
 
 **Evidence:**  
+  ![LCD test 1](docs/photos/max30102-wired.jpg)  
 - Photo: `docs/photos/max30102-wired.jpg`  
 - Serial screenshot: `docs/photos/max30102-serial.png`
 
