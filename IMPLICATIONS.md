@@ -1,7 +1,7 @@
 # Project Implications - Recovery Timer
 
 ## Overview
-This document examines the broader implications of my recovery timer project, considering health and safety, usability, functionality, end-user needs, and sustainability aspects required for Excellence level assessment.
+This document examines the broader implications of my recovery timer project, considering health and safety, usability, functionality, end-user needs, and sustainability aspects required
 
 ## Health & Safety Implications
 
@@ -17,12 +17,6 @@ This document examines the broader implications of my recovery timer project, co
 - All components rated for safe use in consumer electronics
 - ESP32 has built-in protection circuits against overcurrent
 - No exposed high-voltage components or sharp edges
-
-**Medical Disclaimer Awareness:**
-- This is a student project, not a medical device
-- Should not be used for medical diagnosis or treatment decisions
-- Results are for fitness tracking and educational purposes only
-- Users with heart conditions should consult doctors, not rely on this device
 
 ### Exercise Safety Implications
 **Appropriate Exercise Levels:**
