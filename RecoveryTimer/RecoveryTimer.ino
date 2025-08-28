@@ -167,7 +167,7 @@ void setup() {
   display.println("Year 12 Project");   // Print subtitle
   display.println("by Max Brown");      // Print author
   display.display();                    // Actually show on screen
-  delay(3000);                         // Show for 3 seconds
+  delay(5000);                         // Show for 5 seconds
   
   // Try to initialize the heart rate sensor
   if (!heartSensor.begin(Wire, I2C_SPEED_FAST)) {
@@ -697,7 +697,7 @@ void update_display() {
   
   // First line - show what state we're in
   if (idle_mode) {
-    display.println("READY - Press to start");
+    display.println("READY- Press to start");
   }
   else if (doing_baseline) {
     // Show countdown during baseline capture
