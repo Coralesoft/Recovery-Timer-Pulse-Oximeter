@@ -27,14 +27,6 @@ This document explains WHY I made each major design decision in my recovery time
 - Wide availability and good documentation for learning
 
 ### 2. ESP32 Microcontroller
-**Why I chose this over Arduino Uno:**
-
-**Rejected Option: Arduino Uno**
-- Problem: Only 2KB RAM - not enough for 100-sample sensor buffer needed by algorithm
-- Problem: 16MHz processor struggles with real-time SpO2 calculations  
-- Problem: Limited I/O pins for future expansion
-- Problem: No built-in WiFi for potential data sharing features
-
 **Why ESP32 was the right choice:**
 - 520KB RAM easily handles sensor data buffers and session storage
 - Dual-core 240MHz processor can handle complex calculations in real-time
@@ -49,17 +41,18 @@ This document explains WHY I made each major design decision in my recovery time
 **Rejected Option: 16x2 Character LCD**
 - Problem: Too small to show HR, SpO2, and status simultaneously  
 - Problem: Harder to create intuitive user interface
-- Problem: Higher power consumption
-- Problem: Requires more wiring (6+ pins vs 2 for I2C)
+- Problem: Higher power consumption and needed  locig level converter to deal with the 5 volts the LCD needed which can feedback through the SDA and SCK pins
+- Problem: Requires more wiring due to needing to deal with 3.3 and 5 volt
 
 **Rejected Option: Larger OLED displays**
 - Problem: More expensive and I don't need the extra space
 - Problem: Higher power consumption for portable device
 - Problem: Harder to fit in compact enclosure
+- Problem: I didnt have one in my starter kit
 
 **Why 128x32 OLED was perfect:**
 - Low power consumption (important for portable device)
-- Crystal clear display that's easy to read during exercise
+- Crystal clear display that's easy to read
 - I2C interface uses only 2 pins, shares bus with sensor efficiently  
 - Can display graphics and multiple text sizes for better UI
 - Small enough for compact design but big enough for essential info
@@ -77,6 +70,7 @@ This document explains WHY I made each major design decision in my recovery time
 - Problem: Doesn't work well with sweaty fingers after exercise
 - Problem: More expensive and complex to implement
 - Problem: Less reliable feedback than physical button
+- Problem: I didnt have one in my starter kit
 
 **Why single button works best:**
 - Simple to use when you're out of breath after exercise
