@@ -72,16 +72,40 @@ I made separate test programs for each part:
 - Make the readings more stable
 - Add different exercise types
 
-## Photos
-Check the `photos/` folder for pictures of my circuit setup.
+## Project Documentation
 
-## Assessment requirements met
-✅ Timer-based project  
-✅ Captures and stores data  
-✅ User can control it repeatedly  
-✅ Uses advanced programming (interrupts, algorithms, data structures)  
-✅ Has subsystems (sensor, display, input, storage)  
-✅ Shows iterative development through testing  
+### Main Documents
+- **[Development Log](DEVELOPMENT_LOG.md)** - My 6-week development journey with problems and solutions
+- **[Testing Documentation](TESTING.md)** - Evidence of testing with real users and iterative improvements
+- **[Design Justifications](JUSTIFICATIONS.md)** - Why I chose each component and setting
+- **[Project Implications](IMPLICATIONS.md)** - Safety, usability, and sustainability considerations
+- **[Build Instructions](how_to_build.md)** - Step-by-step guide to build your own
+- **[User Instructions](instructions.md)** - How to use the device once built
+
+### Technical Resources
+- **Circuit Diagram**: `docs/ESP32-Diagram-Final.svg` - Complete wiring schematic
+- **Test Programs**: See `/experiments/` for basic tests and `/TestPrograms/` for advanced testing
+- **Sample Data**: Check `/data/samples/` for example output files
+- **Photos**: `docs/photos/` folder with build progress pictures
+- **Videos**: `docs/videos/` folder with demonstration videos
+
+## Technical Features
+
+### What Makes This Project Cool
+- **Real-time Processing** - Handles sensor data and calculations simultaneously
+- **Smart Detection** - Automatically knows when you've exercised (8% heart rate increase)
+- **Data Storage** - Remembers your last 20 sessions to track improvement
+- **Precise Timing** - Accurate to ±2 seconds using millis() function
+- **User Feedback** - Different beeps for different events so you know what's happening
+- **Adaptive Thresholds** - Refined through testing to work for different fitness levels
+
+### Programming Techniques I Learned
+- **State Machines** - Managing different modes (idle, baseline, recovery, etc.)
+- **Digital Signal Processing** - Smoothing noisy sensor data (80% old + 20% new)
+- **Circular Buffers** - Managing 100-sample arrays for the SpO2 algorithm  
+- **Structured Data** - Using structs to organize session information
+- **I2C Communication** - Sharing the bus between sensor and display
+- **Debouncing** - Handling button presses without false triggers  
 
 ## Credits
 - Got help from SparkFun tutorials for the sensor
