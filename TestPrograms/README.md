@@ -31,58 +31,58 @@ Think of it like learning to drive - `/experiments/` is the parking lot practice
 **Why needed**: My OLED wouldn't work - turned out it was 0x3C not 0x27!  
 **Key learning**: Always scan for actual addresses, don't trust documentation blindly
 
-### 💓 max30102-raw/
+### max30102-raw/
 **Purpose**: Read raw sensor values without any processing  
 **Complexity**: More advanced than basic_sensor_test  
 **What it shows**: Raw RED and IR values, helps understand sensor behavior  
 **Key discovery**: IR values range from 1000 (no finger) to 15000+ (finger present)
 
-### 📟 lcd-tests/
+### lcd-tests/
 **Purpose**: Test LCD display before switching to OLED  
 **Why important**: Shows my iteration from LCD → OLED  
 **Result**: LCD worked but was too big and power-hungry
 
-### 🖥️ oled-test1/
+###  oled-test1/
 **Purpose**: Advanced OLED testing with graphics and animations  
 **Difference from experiments/oled_test**: This one tests graphics, not just text  
 **Used for**: Designing the UI layout before implementing in main code
 
-### 🎨 oled-mock-ui/
+### oled-mock-ui/
 **Purpose**: Mock-up the actual user interface without sensor  
 **Why created**: Faster to test UI changes without waiting for sensor readings  
 **Key feature**: Simulates state changes with button presses
 
-### 🫁 spo2-test/
+### spo2-test/
 **Purpose**: Test the SpO2 algorithm in isolation  
 **Complexity**: Uses Maxim's actual algorithm  
 **Challenge**: Understanding the 100-sample buffer requirement  
 **Result**: Learned why readings take 30+ seconds to stabilize
 
-### 🔊 buzzer-test/
+### buzzer-test/
 **Purpose**: Test different beep patterns and tones  
 **Advanced features**: Multiple beep patterns, not just on/off  
 **Used for**: Designing audio feedback system (short beep, long beep, error beep)
 
-### 🔘 button-test/
+### button-test/
 **Purpose**: Advanced button handling with debouncing  
 **Key feature**: Detects short vs long press  
 **Problem solved**: Eliminated multiple press detection issues
 
-### 🔧 system-integration/
+### system-integration/
 **Purpose**: Test all components working together  
 **Why needed**: Check for conflicts (shared I2C bus, power issues)  
 **Key discovery**: No conflicts! I2C sharing works perfectly
 
-### 🌐 working-oled-web/
+### working-oled-web/
 **Purpose**: Test OLED with web server for remote monitoring  
 **Status**: Experimental - maybe for version 2?  
 **Cool feature**: Shows readings on phone browser
 
-### 📱 working-oled-noweb/
+### working-oled-noweb/
 **Purpose**: Same as above but without WiFi  
 **Why both**: Testing if WiFi affects sensor readings (it doesn't!)
 
-### 📦 wrapper-test/
+### wrapper-test/
 **Purpose**: Test the sensor wrapper library I tried to create  
 **Result**: Decided against it - made code more complex, not simpler  
 **Learning**: Sometimes "better" organization isn't actually better!
