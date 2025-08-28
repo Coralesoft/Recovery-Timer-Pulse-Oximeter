@@ -127,22 +127,70 @@ Session,Start Time,Duration (s),Min SpO2 (%),Max HR (bpm),Target Time (s)
 - `GND → GND`  
 - `SDA → GPIO21 (D21)`  
 - `SCL → GPIO22 (D22)`  
-- `INT → GPIO19 (D19)` *(optional, active-low “data ready”)*
+- `INT → GPIO19 (D19)` *(optional, active-low "data ready")*
 
 **Pass:**  
 - I²C scanner shows **0x57**.  
 - With a fingertip on the sensor, **IR/RED values change smoothly** in Serial Monitor.
 
 **Evidence:**  
-  ![LCD test 1](docs/photos/max30102-wired.jpg)  
+  ![MAX30102 wired](docs/photos/max30102-wired.jpg)  
 - Photo: `docs/photos/max30102-wired.jpg`  
 - Serial screenshot: `docs/photos/max30102-serial.png`
 
-**Source:** `TestPrograms/max30102-check/max30102-check.ino`
+**Source:** `TestPrograms/max30102-raw/max30102-raw.ino`
 
 **Notes:**  
 - Keep the I²C bus at **3.3 V**. If your display runs at 5 V, make sure its I²C pull-ups are not tied to 5 V.  
 - If **GPIO19** was used for the buzzer earlier, move the buzzer to **GPIO15** so `INT` can use **GPIO19**.
+
+### ✅ Stage 5A — I2C Device Scanner
+
+**Goal:** Verify all I2C devices are detected at correct addresses before system integration.
+
+**Method:**  
+- Scan I2C bus addresses 0x08 to 0x77
+- Report all detected devices with identification
+- Verify expected devices are found
+
+**Expected Results:**
+- `0x3C`: SSD1306 OLED Display
+- `0x57`: MAX30102 Pulse Oximeter
+
+**Source:** `TestPrograms/i2c-scanner/i2c-scanner.ino`
+
+### ✅ Stage 5B — SpO₂ Algorithm Validation
+
+**Goal:** Test complete SpO₂ calculation pipeline with smoothing and finger detection.
+
+**Method:**  
+- Collect 100-sample buffer for Maxim algorithm
+- Apply Exponential Moving Average smoothing
+- Validate readings against reference pulse oximeter
+- Test finger detection reliability
+
+**Pass Criteria:**
+- SpO₂: 95-100% for healthy individuals
+- Heart Rate: 60-100 BPM at rest
+- Stable readings with finger placement
+- Reliable finger detection (IR > 15000)
+
+**Source:** `TestPrograms/spo2-test/spo2-test.ino`
+
+### ✅ Stage 5C — System Integration Test
+
+**Goal:** Verify all hardware components working together in complete system.
+
+**Test Sequence:**
+1. Initialize OLED display with startup message
+2. Initialize MAX30102 sensor with optimal settings
+3. Test buzzer audio patterns
+4. Demonstrate live sensor readings on display
+5. Validate button input with audio feedback
+
+**Pass:** All components respond correctly in integrated environment
+
+**Source:** `TestPrograms/system-integration/system-integration.ino`
 
 
 ## 📄 License
