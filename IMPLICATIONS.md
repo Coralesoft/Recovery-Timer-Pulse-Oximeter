@@ -58,15 +58,15 @@ This document examines the broader implications of my recovery timer project, co
 ### Measurement Accuracy
 **Real-world Performance:**
 - ±2 second accuracy for recovery timing (tested across multiple users)
-- Heart rate readings within ±3 bpm of reference devices
-- SpO2 readings within ±2% of medical-grade devices
+- Heart rate readings within ±5 bpm of reference devices
+- SpO2 readings within ±3% of reference devices
 - Automatic detection reduces human timing errors
 
 **Limitations and Constraints:**
 - Requires still finger placement for accurate readings
 - Performance affected by poor circulation or very cold hands
 - Bright ambient light can interfere with sensor readings
-- Not suitable for people with certain medical conditions affecting circulation
+
 
 ### Data Reliability  
 **Session Storage:**
