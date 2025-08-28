@@ -98,10 +98,10 @@ I made separate test programs for each part to make sure everything worked befor
 
 ### Test Session 2 - Dad  
 - Baseline: HR 65, SpO2 97%
-- Exercise: Run upstairs twice
-- Recovery time: 38 seconds  
-- Notes: His fitness is better than mine 😅
-
+- Exercise: Run upstairs Once
+- Recovery time: 160 seconds  
+- Notes: Trouble getting a reading
+  
 ### Test Session 3 - Mum
 - Baseline: HR 70, SpO2 98%
 - Exercise: 15 jumping jacks
