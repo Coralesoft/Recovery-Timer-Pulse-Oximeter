@@ -41,7 +41,7 @@ void setup() {
   
   // Show some text
   display.println("OLED Test Working!");
-  display.println("Made by [Your Name]");
+  display.println("Made by Max Brown");
   display.println("Year 12 Electronics");
   
   display.display();  // Actually show it on screen
