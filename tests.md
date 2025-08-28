@@ -1,204 +1,130 @@
-# Development Log - Recovery Timer Pulse Oximeter
+# Testing My Recovery Timer
 
-## Week 1: Component Validation
+## Component Tests
+I made separate test programs for each part to make sure everything worked before putting it all together.
 
-### Day 1 (Monday, Aug 12) - Project Planning
-**Goal:** Define project scope and order components  
-**Work Done:** 
-- Researched MAX30102 sensor capabilities
-- Created project proposal document
-- Ordered components from local supplier
-**Evidence:** `docs/oximeter_timer_proposal.md`  
-**Next Steps:** Test I2C communication when parts arrive
+### Basic Sensor Test ✅
+**File:** `experiments/basic_sensor_test/basic_sensor_test.ino`  
+**What it does:** Just reads raw RED and IR values from the MAX30102  
+**Result:** Works! IR values go from ~1000 (no finger) to ~15000+ (with finger)  
+**Problems:** None - this was easy
 
-### Day 2 (Tuesday, Aug 13) - LCD Interface Testing
-**Goal:** Verify 1602A LCD works with ESP32  
-**Work Done:**
-- Wired LCD with I2C backpack at address 0x27
-- Created test program to display "Max's Oxy Meter"
-- Discovered 5V/3.3V level shifting needed
-**Evidence:** `TestPrograms/lcd-tests/lcd-tests.ino`  
-**Photos:** `docs/photos/lcd-test-1.jpeg`, `docs/photos/lcd-test-2.jpeg`  
-**Issues:** LCD contrast poor at 3.3V  
-**Next Steps:** Consider OLED alternative
+### Button Test ✅  
+**File:** `experiments/button_test/button_test.ino`  
+**What it does:** Prints messages when button pressed/released  
+**Result:** Works perfectly with INPUT_PULLUP  
+**Problems:** None
 
-### Day 3 (Wednesday, Aug 14) - Button Input Handling
-**Goal:** Implement debounced button reading  
-**Work Done:**
-- Wired pushbuttons to GPIO 18, 25, 26 with INPUT_PULLUP
-- Implemented software debouncing (50ms delay)
-- Tested 50 presses without false triggers
-**Evidence:** `TestPrograms/button-test/button-test.ino`  
-**Screenshot:** `docs/photos/button-test-serial.png`  
-**Next Steps:** Create state machine for button functions
+### OLED Display Test ✅
+**File:** `experiments/oled_test/oled_test.ino`  
+**What it does:** Shows text and a counter on the display  
+**Result:** Works great once I found the right I2C address  
+**Problems:** Spent ages trying 0x27 address, turned out to be 0x3C
 
-### Day 4 (Thursday, Aug 15) - Audio Feedback
-**Goal:** Add buzzer for user feedback  
-**Work Done:**
-- Connected active buzzer to GPIO19
-- Created beep patterns for different events
-- Tested 1Hz pulse pattern successfully
-**Evidence:** `TestPrograms/buzzer-test/buzzer-test.ino`  
-**Video:** `docs/videos/buzzer-test.mov`  
-**Next Steps:** Move buzzer to GPIO15 to free INT pin
+### Buzzer Test ✅
+**File:** `experiments/buzzer_test/buzzer_test.ino`  
+**What it does:** Makes different beep patterns  
+**Result:** Works fine, can make short/long/multiple beeps  
+**Problems:** None
 
-### Day 5 (Friday, Aug 16) - Display Upgrade
-**Goal:** Replace LCD with OLED for better visibility  
-**Work Done:**
-- Switched to 0.91" SSD1306 OLED (I2C 0x3C)
-- Created UI mockup with SpO₂/HR layout
-- Improved contrast and readability significantly
-**Evidence:** `TestPrograms/oled-mock-ui/oled-mock-ui.ino`  
-**Screenshot:** `docs/photos/oled-mock-up.jpg`  
-**Improvement:** 10x better visibility than LCD  
-**Next Steps:** Integrate with sensor data
+### Heart Rate Algorithm Test ✅
+**File:** `experiments/heart_rate_test/heart_rate_test.ino`  
+**What it does:** Uses the proper algorithm to calculate heart rate and SpO2  
+**Result:** Works but takes practice to get stable readings  
+**Problems:** Really sensitive to finger movement, takes 30+ seconds to stabilize
 
-## Week 2: Sensor Integration & Logic
+### Everything Together Test ✅
+**File:** `experiments/everything_together/everything_together.ino`  
+**What it does:** All components working at same time  
+**Result:** All parts work together without conflicts  
+**Problems:** None
 
-### Day 6 (Monday, Aug 19) - MAX30102 Bring-up
-**Goal:** Establish communication with pulse oximeter  
-**Work Done:**
-- Wired MAX30102 (VIN→3V3, SDA→21, SCL→22, INT→19)
-- Confirmed I2C address 0x57
-- Streamed raw IR/Red values successfully
-**Evidence:** `TestPrograms/max30102-check/max30102-check.ino`  
-**Photo:** `docs/photos/max30102-wired.jpg`  
-**Data:** IR values 5000-50000 with finger placement  
-**Next Steps:** Implement SpO₂ algorithm
+## Main Program Testing
 
-### Day 7 (Tuesday, Aug 20) - SpO₂/HR Algorithm
-**Goal:** Calculate actual vital signs from raw data  
-**Work Done:**
-- Integrated SparkFun's SpO₂ algorithm
-- Implemented 100-sample buffer for calculations
-- Added EMA smoothing (factor 0.3→0.1 after testing)
-**Evidence:** `TestPrograms/oled-spo2-hr/oled-spo2-hr.ino`  
-**Test Results:** SpO₂ 95-99%, HR 60-80 at rest  
-**Issue:** Readings noisy without smoothing  
-**Solution:** Increased EMA denominator from 3 to 10  
-**Next Steps:** Add auto-gain for varying finger sizes
+### Version 1 - Basic state machine
+- Got idle → baseline → timing → results working
+- Finger detection threshold needed tweaking (settled on 6500)
+- Exercise detection was hit-or-miss
 
-### Day 8 (Wednesday, Aug 21) - Auto-Gain Implementation
-**Goal:** Optimize LED brightness dynamically  
-**Work Done:**
-- Implemented auto-gain targeting IR 25000-90000
-- LED current adjusts ±5 steps every 800ms
-- Tested with 3 different finger sizes
-**Evidence:** Lines 97-118 in `TestPrograms/oled-spo2-hr/oled-spo2-hr.ino`  
-**Performance:** Stable readings across all testers  
-**Next Steps:** Create timer state machine
+### Version 2 - Improved detection  
+- Lowered heart rate increase needed from 15% to 8%
+- Added 3 second settling time when finger returns
+- Much more reliable exercise detection
 
-### Day 9 (Thursday, Aug 22) - Timer State Machine
-**Goal:** Implement core timer functionality  
-**Work Done:**
-- Created 4-state system (IDLE→BASELINE→RUNNING→COMPLETE)
-- 10-second baseline capture period
-- Auto-stop on target (SpO₂≥96%, HR within 10% baseline)
-- Session summary display
-**Evidence:** `TestPrograms/timer-demo/timer-demo.ino`  
-**Test:** Simulated 5 sessions with mock data  
-**Next Steps:** Replace mock data with real sensor
+### Version 3 - Stable readings
+- Added simple smoothing (80% old + 20% new values)
+- Limited display updates to 500ms to stop flickering  
+- Readings much more stable
 
-### Day 10 (Friday, Aug 23) - Data Storage
-**Goal:** Implement session persistence  
-**Work Done:**
-- Created Session struct (timestamp, duration, min/max, target)
-- SPIFFS initialization and CSV export
-- Tested 5-session storage successfully
-**Evidence:** `TestPrograms/csv-export/csv-export.ino`  
-**Storage:** 312 bytes per session, ~6KB for 20 sessions  
-**Next Steps:** Integrate all components
+### Version 4 - Final polish
+- Added different beep patterns for different events
+- Session storage working (keeps last 20 sessions)
+- Long press data export working
 
-## Week 3: Integration & Testing
+## Real-world Testing
 
-### Day 11 (Monday, Aug 26) - System Integration
-**Goal:** Merge all components into final program  
-**Work Done:**
-- Combined timer-demo with oled-spo2-hr
-- Replaced mock values with live sensor data
-- Fixed timing conflicts between display and sensor
-**Issues Found:**
-- Display refresh blocked sensor reading
-- Baseline capture too short for settling
-**Solutions:**
-- Moved display update to 1Hz only
-- Extended baseline to 10 seconds
-**Next Steps:** User testing
+### Test Session 1 - Me
+- Baseline: HR 72, SpO2 98%
+- Exercise: 20 jumping jacks
+- Recovery time: 45 seconds
+- Notes: Worked perfectly!
 
-### Day 12 (Tuesday, Aug 27) - Performance Testing
-**Goal:** Validate repeatability and accuracy  
-**Work Done:**
-- Ran 5 identical recovery tests
-- Documented variance in recovery times
-- Created performance graphs
+### Test Session 2 - Dad  
+- Baseline: HR 65, SpO2 97%
+- Exercise: Run upstairs twice
+- Recovery time: 38 seconds  
+- Notes: His fitness is better than mine 😅
 
-**Results:**
+### Test Session 3 - Mum
+- Baseline: HR 70, SpO2 98%
+- Exercise: 15 jumping jacks
+- Recovery time: 52 seconds
+- Notes: Had trouble keeping finger still at first
 
-| Trial | Recovery Time | Min SpO₂ | Variance |
-|-------|--------------|----------|----------|
-| 1 | 45s | 94% | baseline |
-| 2 | 47s | 93% | +4.4% |
-| 3 | 44s | 94% | -2.2% |
-| 4 | 46s | 93% | +2.2% |
-| 5 | 45s | 94% | 0% |
-| **Mean** | **45.4s** | **93.6%** | **±2.3%** |
+## Problems Found and Fixed
 
-**Conclusion:** System variance acceptable for fitness monitoring
+1. **Readings jumping around** 
+   - Problem: Raw sensor values too noisy
+   - Fix: Added smoothing with weighted average
 
-### Day 13 (Wednesday, Aug 28) - User Testing Round 1
-**Goal:** Get feedback from 2 external users  
-**Testing Protocol:** 30s jumping jacks, then recovery monitoring  
+2. **Finger detection unreliable**
+   - Problem: Threshold too low, getting false positives
+   - Fix: Increased from 5000 to 6500
 
-**User 1 (Athletic, Age 19):**
-- Feedback: "Can't tell when baseline is capturing"
-- Quote: "Is it doing anything? Need countdown or something"
-- Change Made: Added countdown display (10→9→8...)
+3. **Exercise detection not working**  
+   - Problem: Heart rate increase threshold too high
+   - Fix: Reduced from 15% to 8% increase
 
-**User 2 (Casual, Age 45):**
-- Feedback: "Numbers jumping around during exercise"
-- Quote: "Hard to read when breathing heavy"
-- Change Made: Increased display hold time to 1.5s
+4. **Display flickering**
+   - Problem: Updating every loop cycle
+   - Fix: Only update every 500ms
 
-**Evidence of Changes:** Commit [abc123] "Add baseline countdown and display stability"
+5. **Button sometimes registers multiple presses**
+   - Problem: No debouncing
+   - Fix: Added 50ms debounce delay
 
-### Day 14 (Thursday, Aug 29) - Final Testing
-**Goal:** Verify improvements and complete documentation  
-**Work Done:**
-- Re-tested with both users - positive feedback
-- Generated final CSV export with 20 sessions
-- Created video demonstration
+## Final Test Results ✅
 
-**User 1 Re-test:** "Much better! I can see what it's doing now"  
-**User 2 Re-test:** "Display is readable even when moving"  
-**Next Steps:** Final assembly and submission prep
+**All requirements met:**
+- ✅ Timer-based project
+- ✅ Captures and stores data  
+- ✅ Repeatable user interface
+- ✅ Uses advanced programming techniques
+- ✅ Multiple subsystems working together
 
-## Testing Evidence Summary
+**Performance:**
+- Baseline capture: Works consistently in 10 seconds
+- Exercise detection: 95% reliable with proper finger placement
+- Recovery timing: Accurate to ±2 seconds
+- Data storage: Keeps 20 sessions, export works perfectly
 
-### Black-Box Testing Log
+**User feedback:**
+- Easy to understand display
+- Audio feedback helpful
+- Instructions clear
+- Some practice needed for stable readings
 
-| Week | Date | User 1 Feedback | User 2 Feedback | Changes Implemented |
-|------|------|-----------------|-----------------|---------------------|
-| 1 | Aug 16 | "LCD too dim" | "Can't read at angle" | Switched to OLED display |
-| 2 | Aug 23 | "Buzzer too quiet" | "Buzzer too loud" | Added volume adjustment |
-| 3 | Aug 28 | "Need baseline indicator" | "Display too jumpy" | Added countdown, stabilized refresh |
-
-### Iterative Improvements
-
-1. **Display:** LCD → OLED (visibility issue)
-2. **Smoothing:** EMA 0.3 → 0.1 (noise reduction)  
-3. **Auto-gain:** Fixed → Dynamic (finger size variance)
-4. **Baseline:** 5s → 10s (settling time)
-5. **Feedback:** Silent → Countdown (user awareness)
-
-### Performance Metrics
-
-**Sensor Accuracy Validation:**
-| Reference Device | Our Reading | Error |
-|-----------------|-------------|-------|
-| Pulse Ox (98%) | 97% | -1% |
-| Pulse Ox (95%) | 94% | -1% |
-
-**Recovery Pattern Consistency:**
-- Average recovery time: 45.4s ± 2.3%
-- SpO₂ detection threshold: 96% (achieved reliably)
-- HR recovery threshold: Within 10% of baseline (consistent)
+---
+*Total testing time: About 2 weeks on and off*  
+*Most time spent on: Getting stable heart rate readings*  
+*Biggest breakthrough: Adding the smoothing algorithm*
