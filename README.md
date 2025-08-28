@@ -1,6 +1,6 @@
 # Recovery Timer Project
 **Year 12 Electronics - Wellington College 2025**  
-**Made by: [Your Name Here]**
+**Made by: Max Brown**
 
 ## What it does
 This project measures how fast your heart rate and oxygen levels go back to normal after doing exercise. It's like a fitness tracker but I made it myself using an ESP32 and some sensors.
@@ -42,7 +42,7 @@ GND → ESP32 GND
 SDA → ESP32 GPIO21 (same as sensor)
 SCL → ESP32 GPIO22 (same as sensor)
 
-Button → ESP32 GPIO25 (with pullup resistor)
+Button → ESP32 GPIO25 and GND (no external resistor needed)
 Buzzer → ESP32 GPIO15
 ```
 
@@ -72,8 +72,8 @@ I made separate test programs for each part:
 - Make the readings more stable
 - Add different exercise types
 
-## Photos and videos
-Check the `photos/` folder for pictures of the circuit and `videos/` for demos of it working.
+## Photos
+Check the `photos/` folder for pictures of my circuit setup.
 
 ## Assessment requirements met
 ✅ Timer-based project  

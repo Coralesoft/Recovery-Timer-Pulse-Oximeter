@@ -15,16 +15,17 @@ This device times how long it takes for your heart rate and oxygen to get back t
 - **Long press** (hold 2 seconds) - Export your data over serial monitor
 
 ## What the display shows
-- **READY** - Put finger on and press to start
-- **BASELINE: Xs** - Recording your normal levels (X seconds left)
-- **Do exercise, then place finger back** - Self explanatory!
-- **RECOVERY: Xs** - Timing your recovery (X seconds so far)
-- **DONE! Xs** - Finished! Took X seconds to recover
+- **READY- Press to start** - Put finger on and press to start
+- **BASELINE: X seconds** - Recording your normal levels (X seconds left)
+- **Do exercise, then** / **place finger back!** - Self explanatory!
+- **Ready to start timing?** - Shows when finger is back on sensor
+- **RECOVERY: X sec** - Timing your recovery (X seconds so far)
+- **DONE! Time: Xs** - Finished! Took X seconds to recover
 
 ## Understanding the readings
 - **O2: XX%** - Your blood oxygen level (normal is 95-100%)
 - **HR: XXX bpm** - Your heart rate in beats per minute
-- **Targets: O2✓ HR✓** - Shows which recovery targets you've reached
+- **Target: O2-OK HR-OK** - Shows which recovery targets you've reached (or O2-NO HR-NO if not met)
 
 ## Recovery targets
 - **Oxygen**: Must get back to 96% or higher  
