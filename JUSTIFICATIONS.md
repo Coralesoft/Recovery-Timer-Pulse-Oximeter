@@ -119,25 +119,20 @@ This document explains WHY I made each major design decision in my recovery time
 - Matches the timing used in professional pulse oximeters I researched
 - Testing showed consistent baseline readings across different users
 
-### 7. Exponential Moving Average Smoothing (80% old + 20% new)
-**Why this specific smoothing ratio:**
+### 7. Smoothing the Readings
 
-**No smoothing:**
-- Readings jump around too much, hard to read display
-- Small movements cause large changes in readings
-- Users reported display was "jumpy and distracting"
+The pulse readings were really jumpy at first - like going from 75 to 95 to 80 in seconds which made it hard to know when someone's pulse was actually stable. I tried a few different ways to fix this:
 
-**Too much smoothing (95% old + 5% new):**
-- Readings change too slowly to be useful
-- Takes too long to detect real changes in HR/SpO2
-- Recovery detection becomes sluggish
+First I tried just averaging the last 5 readings together but it was still too jumpy. Then I found this thing online about weighted averages where the newest reading counts more than old ones. 
 
-**Why 80/20 ratio is optimal:**
-- Smooths out sensor noise and small movements
-- Still responds quickly to real physiological changes
-- Balances stability with responsiveness  
-- Common ratio used in professional medical devices
-- Testing confirmed it gives stable but responsive readings
+So basically what I did was:
+- Take the new reading and multiply it by 0.2 (20%)
+- Take the old average and multiply it by 0.8 (80%)
+- Add them together
+
+This works pretty well because it smooths out the random spikes but still responds when the pulse actually changes. Like if someone's pulse is dropping after exercise, it follows the trend but ignores the weird one-off readings where the sensor glitches.
+
+I picked 80/20 after trying different numbers - 90/10 was too slow to respond and 50/50 was still too jumpy. The 80/20 split seemed to work best for most people I tested with.
 
 ## Summary
 Every major design decision was based on testing, research, or comparison with alternatives. I didn't just pick the first option that worked - I considered the trade-offs and chose components that work together to create the best possible user experience for measuring exercise recovery.

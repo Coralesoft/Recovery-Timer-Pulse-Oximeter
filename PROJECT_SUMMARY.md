@@ -146,14 +146,16 @@
 
 ---
 
-## 💭 Final Reflection
+## 💭 Final Thoughts
 
-This project transformed from "just make something with a timer" into a genuinely useful device that solves a real problem. The journey from noisy, unreliable readings to a polished product that works for different users taught me that engineering is as much about iteration and testing as it is about initial design.
+This project turned out way better than I expected when I started. Getting the pulse sensor to work reliably was definitely the hardest part - I nearly gave up a few times when the readings were all over the place. But once I figured out the smoothing thing and got the threshold values right it actually works pretty good.
 
-**Most importantly**: I learned that the best solutions come from understanding the problem deeply, testing with real users, and being willing to completely redesign when something isn't working.
+The LCD was easier than I thought it would be, once I worked out the I2C address issue. Making the menu system was actually kind of fun compared to dealing with sensor problems.
+
+If I had more time I'd probably try to add bluetooth so it could send data to a phone app, and maybe make the case look more professional. Also the sensor still sometimes gives weird readings if you move your finger too much so that could be improved.
+
+Overall though I'm pretty happy with how it works - my family have been using it after their runs and the recovery times seem to match how fit they are, so I think its measuring something real even if its not perfect.
 
 ---
-
-*"Good engineering isn't making something work once - it's making it work reliably for everyone."*
 
 **- Max Brown, Year 12, Wellington College**
