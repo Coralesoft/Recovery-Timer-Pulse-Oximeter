@@ -24,16 +24,15 @@
 ### Accuracy & Reliability
 - **Recovery Timing Accuracy**: ±2 seconds
 - **Exercise Detection Rate**: 95% success
-- **Finger Detection Reliability**: 100% (after threshold optimization)
-- **False Positive Rate**: 0% (with 6500 threshold)
+- **Finger Detection Reliability**: 95% (after threshold optimization)
+- **False Positive Rate**: 5% (with 6500 threshold)
 - **Data Storage Capacity**: 20 sessions
 
 ### Technical Specifications  
 - **Sampling Rate**: 100 samples/second
 - **Display Update Rate**: 2 Hz (optimized from 50 Hz)
 - **Processing Speed**: 240 MHz dual-core ESP32
-- **Memory Usage**: ~15KB of 520KB available RAM
-- **Power Consumption**: ~150mA @ 3.3V
+
 
 ---
 
@@ -58,16 +57,16 @@
 ## 👥 Testing Coverage
 
 ### User Testing
-- **Total Testers**: 10+ people
-- **Age Range**: 9-45 years
+- **Total Testers**: 3 people
+- **Age Range**: 9-52 years
 - **Health Conditions**: Including heart condition (shows device adaptability)
-- **Exercise Types Tested**: 5 (jumping jacks, stairs, burpees, jogging, squats)
-- **Total Test Sessions**: 50+
+- **Exercise Types Tested**: 5 (jumping jacks, stairs, burpees)
+- **Total Test Sessions**: 20+
 
 ### Test Results Summary
-- **Fastest Recovery**: 38 seconds (Dad, regular fitness)
-- **Slowest Recovery**: 65 seconds (Lillybelle, heart condition)
-- **Average Recovery**: 41 seconds
+- **Fastest Recovery**: 42 seconds (Lillybelle, fit but has a heart condition)
+- **Slowest Recovery**: 122 seconds (Dad, regular fitness)
+- **Average Recovery**: 81 seconds
 - **Most Common Feedback**: "Easy to use once you learn finger placement"
 
 ---
@@ -122,7 +121,7 @@
 
 - ✅ 838 lines of commented main code
 - ✅ 15 test programs showing development process
-- ✅ 10+ documentation files totaling 50+ pages
+- ✅ 10+ documentation files
 - ✅ 3 demonstration videos
 - ✅ 5 progress photos
 - ✅ Complete circuit diagram with all components
