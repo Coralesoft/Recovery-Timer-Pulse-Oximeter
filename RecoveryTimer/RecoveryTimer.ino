@@ -753,27 +753,27 @@ void update_display() {
   
   // Third line - status information
   if (latest_ir_reading < finger_detected_threshold && !waiting_for_exercise) {
-    // Remind user to place finger
-    display.println("Place finger on sensor");
+    // Remind user to place finger (shortened to fit display width)
+    display.println("Place finger on");
   }
   else if (timing_recovery && current_oxygen > 0 && current_heart_rate > 0) {
-    // Show which recovery targets are met
-    display.print("Targets: ");
+    // Show which recovery targets are met (using simple text instead of special characters)
+    display.print("Target: ");
     
     // Check oxygen target
     if (current_oxygen >= target_oxygen_level) {
-      display.print("O2✓ ");  // Checkmark - oxygen target met
+      display.print("O2-OK ");  // Using simple text instead of checkmark
     } else {
-      display.print("O2✗ ");  // X - oxygen target not met
+      display.print("O2-NO ");  // Using simple text instead of X
     }
     
     // Check heart rate target
     int hr_diff = abs(current_heart_rate - baseline_heart_rate);
     int acceptable_diff = baseline_heart_rate * heart_rate_recovery_margin;
     if (hr_diff <= acceptable_diff) {
-      display.print("HR✓");   // Checkmark - heart rate target met
+      display.print("HR-OK");   // Using simple text instead of checkmark
     } else {
-      display.print("HR✗");   // X - heart rate target not met
+      display.print("HR-NO");   // Using simple text instead of X
     }
   }
   
