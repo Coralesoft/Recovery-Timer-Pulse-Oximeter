@@ -99,7 +99,7 @@ I made separate test programs for each part to make sure everything worked befor
 ### Test Session 2 - Dad  
 - Baseline: HR 65, SpO2 97%
 - Exercise: Run upstairs Once
-- Recovery time: 160 seconds  
+- Recovery time: 122 seconds  
 - Notes: Trouble getting a reading
   
 ### Test Session 3 - Mum
@@ -147,16 +147,16 @@ I made separate test programs for each part to make sure everything worked befor
 
 ## Blackbox Testing with Multiple Users
 
-### Tester 1 - Dad (Age 45, Regular Exercise)
+### Tester 1 - Dad (Age 52, Regular Exercise)
 - **Baseline**: HR 65, SpO2 97%
 - **Exercise**: Ran upstairs twice  
-- **Recovery Time**: 38 seconds
+- **Recovery Time**: 122 seconds
 - **Feedback**: "Display is clear, beeps help know when it's working. Takes a few tries to keep finger still enough."
 - **Issue Found**: Initially couldn't get stable baseline - led to finger placement instructions
 
 ### Tester 2 - Mum (Age 42, Moderate Fitness)
 - **Baseline**: HR 70, SpO2 98%
-- **Exercise**: 15 jumping jacks
+- **Exercise**: 10 jumping jacks
 - **Recovery Time**: 52 seconds  
 - **Feedback**: "Really cool seeing the numbers change! Audio feedback is helpful. Text is small but readable."
 - **Issue Found**: Struggled with button timing - led to clearer on-screen prompts
@@ -164,7 +164,7 @@ I made separate test programs for each part to make sure everything worked befor
 ### Tester 3 - Sister Lillybelle (Age 9, Heart Condition)
 - **Baseline**: HR 110, SpO2 98%
 - **Exercise**: 15 jumping jacks (light exercise appropriate for her)
-- **Recovery Time**: 65 seconds
+- **Recovery Time**: 42 seconds
 - **Feedback**: "The beeps are helpful! It's like a game waiting for it to finish."
 - **Issue Found**: Higher baseline HR works fine - device adapts to individual baselines automatically
 
